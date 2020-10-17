@@ -4,25 +4,25 @@
     <p class="slogen">FakeZhihu Project</p>
     <div class="register" v-show="nowStatus === 'register'">
       <el-form :model="registerForm" :rules="registerRules" ref="registerForm" label-width="0px">
-        <el-form-item prop="name" class="no-label">
+        <el-form-item prop='name' class="no-label">
           <el-input placeholder="请输入用户名" v-model="registerForm.name" />
         </el-form-item>
-        <el-form-item prop="email" class="no-label">
+        <el-form-item prop='email' class="no-label">
           <el-input placeholder="请输入邮箱" v-model="registerForm.email" />
         </el-form-item>
-        <el-form-item prop="password" class="no-label">
+        <el-form-item prop='password' class="no-label">
           <el-input type="password" placeholder="请输入密码" v-model="registerForm.password" />
         </el-form-item>
         <el-form-item prop='passwordEnsure' class="no-label">
           <el-input type="password" placeholder="请再次输入密码" v-model="registerForm.passwordEnsure" />
         </el-form-item>
-        <el-form-item prop="submit">
+        <el-form-item prop='submit'>
           <el-button class="submit-btn" type="primary" @click="submitForm('registerForm')">
             注册
           </el-button>
         </el-form-item>
       </el-form>
-
+test
       <div class="footer register-footer">
         <span>
           注册即代表同意
@@ -36,7 +36,7 @@
     <div class="login" v-show="nowStatus === 'login'">
       <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0px">
         <el-form-item prop="username" class="no-label">
-          <el-input placeholder="手机号或邮箱" v-model="loginForm.username" />
+          <el-input placeholder="请输入用户名" v-model="loginForm.username" />
         </el-form-item>
         <el-form-item prop="password" class="no-label">
           <el-input placeholder="请输入密码" v-model="loginForm.password" type="password" />
@@ -68,13 +68,14 @@
 </template>
 
 <script>
+import request from '@/service'
+import md5 from 'md5'
+
 export default {
   data() {
     const validatePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入密码'))
-      } else if (!this.pwdReg.test(value)) {
-        callback(new Error('用户密码由   组成'))
       } else {
         if (this.registerForm.passwordEnsure !== '') {
           this.$refs.registerForm.validateField('passwordEnsure')
@@ -111,7 +112,7 @@ export default {
       registerRules: {
         email: [
           { required: true, message: '请输入邮箱', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -137,17 +138,60 @@ export default {
     }
   },
   methods: {
+    // submitForm(formName) {
+    //   this.$refs[formName].validate((valid) => {
+    //     if (valid) {
+    //       if (this.nowStatus === 'register') {
+    //         console.log('触发注册')
+    //       } else {
+    //         console.log('触发登录')
+    //       }
+    //     } else {
+    //       this.$Message.error('error submit !!!')
+    //       return false
+    //     }
+    //   })
+    // }
+
+    async register() {
+      await request.post('/users/create', {
+        name: this.registerForm.name,
+        pwd: md5(this.registerForm.password),
+        email: this.registerForm.email
+      }).then((res) => {
+        if (res.status === 201) {
+          this.$Message.success('注册成功')
+          this.$router.push({ name: 'home' })
+        } else {
+          this.$Message.error(res.data.msg)
+        }
+      })
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.nowStatus === 'register') {
-            console.log('触发注册')
+            this.register()
           } else {
-            console.log('触发登录')
+            this.login()
           }
         } else {
           this.$Message.error('error submit !!!')
           return false
+        }
+        return ''
+      })
+    },
+    async login() {
+      await request.post('/users/login', {
+        name: this.loginForm.username,
+        pwd: md5(this.loginForm.password)
+      }).then((res) => {
+        if (res.status === 200) {
+          this.$Message.success('登录成功')
+          this.$router.push({ name: 'home' })
+        } else {
+          this.$Message.error(res.data.msg)
         }
       })
     }

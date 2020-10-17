@@ -15,6 +15,7 @@
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
       <el-button class="btnAsk" size="small" type="primary">提问</el-button>
+
       <div class="userInfo" v-if="!isLogin">
         <route-link :to="{ name: 'signup' }">登录</route-link>
       </div>
@@ -25,7 +26,7 @@
         <!-- 下拉菜单  -->
         <el-dropdown placement="bottom" trigger="click" class="hand-click">
           <span>
-            rz
+            {{this.name}}
             <img class="avator" height="20px" width="20px" src="./../assets/logo.png" alt="">
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -52,14 +53,19 @@
 </template>
 
 <script>
+import request from '@/service'
+
 export default {
   data() {
     return {
       activeIndex: '1',
-      keyword: '',
+      keywords: '',
       isLogin: true,
       name: ''
     }
+  },
+  mounted() {
+    this.checkLogin()
   },
   methods: {
     handleSelect(key) {
@@ -67,49 +73,34 @@ export default {
     },
     goToPersionalPage() {
       console.log('跳转到用户页面')
+    },
+    async checkLogin() {
+      await request.get('users/checkLogin').then((res) => {
+        if (res.status === 200) {
+          this.name = res.data.name
+          this.isLogin = true
+        } else {
+          this.$router.push({ name: 'signup' })
+          this.isLogin = false
+        }
+      })
+    },
+    async logout() {
+      await request.post('/users/logout').then((res) => {
+        if (res.status === 200) {
+          this.$Message.success('注销成功')
+          this.name = ''
+          this.$router.push({ name: 'signup' })
+        } else {
+          this.$Message.error('注销失败，请稍后再试')
+        }
+      })
+      console.log('登出')
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-// .main-header {
-//   position: relative;
-//   z-index: 100;
-//   min-width: 1032px;
-//   overflow: hidden;
-//   background: #FFFFFF;
-//   box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
-//   background-clip: content-box;
-//   .header-content {
-//     position: relative;
-//     display: flex;
-//     width: 1000px;
-//     height: 52px;
-//     padding: 0 16px;
-//     margin: 0 auto;
-//     align-items: center;
-//     transition: -webkit-transform 0.3s;
-//     transition: transform 0.3s;
-//     transition: transform 0.3s, -webkit-transform 0.3s;
-//     .logo {
-//       height: 35px;
-//     }
-//     .search {
-//       width: 300px;
-//     }
-//     .userInfo {
-//       flex: 1;
-//       justify-content: flex-end;
-//       display: flex;
-//       align-items: center;
-//       .icon-item {
-//         font-size: 20px;
-//       }
-//       .avatar {
-//         width: 20px;
-//       }
-//     }
-//   }
-// }
+
 </style>

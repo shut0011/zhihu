@@ -1,12 +1,17 @@
 <template>
   <el-card class="list-nav-card">
     <el-menu class="listNav" :default-active="activeIndex" mode="horizontal">
-      <el-menu-item index="1" v-if="type === 'main'">
-        <route-link :to="{ name: 'home' }">推荐</route-link>
+      <el-menu-item index="1" v-if="type === 'main'"
+      @click="$router.push({ name: 'home' })">
+        推荐
       </el-menu-item>
-      <el-menu-item index="2" v-if="type === 'main'">
+      <el-menu-item index="2" v-if="type === 'main'"
+      @click="$router.push({ name: 'hot' })">
+        热榜
+      </el-menu-item>
+      <!-- <el-menu-item index="2" v-if="type === 'main'">
         <route-link :to="{ name: 'hot' }">热榜</route-link>
-      </el-menu-item>
+      </el-menu-item> -->
     </el-menu>
   </el-card>
 </template>

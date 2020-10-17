@@ -22,6 +22,7 @@ import SignUpCore from './../components/SignUpCore'
 export default {
   components: {
     SignUpCore
-  }
+  },
+  methods: {}
 }
 </script>
