@@ -1,26 +1,22 @@
 <template>
   <div>
-    <quill-editor
-      class="rich-text-editor"
-      v-model="value"
-      ref="myQuillEditor"
-      :options= "options"
-      @change="updateRichText($event)"
-    >
+    <quill-editor class="rich-text-editor" v-model="value" ref="myQuillEditor" :options= "options"
+      @change="updateRichText($event)">
     </quill-editor>
-    <el-upload
-      class="hidden"
-      action="/imgs/upload"
-      :on-success=uploadSuc
-      accept=".jpg,.jpeg,.JPG,.JPEG,.png,.PNG"
-      multiple>
+    abc
+    <el-upload class="hidden" action="/imgs/upload" :on-success=uploadSuc
+      accept=".jpg,.jpeg,.JPG,.JPEG,.png,.PNG">
       <div ref="hiddenUpload"></div>
     </el-upload>
   </div>
 </template>
 <script>
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
 import { quillEditor } from 'vue-quill-editor'
-import { imgDec } from '@/lib/config.js'
+// import { imgDec } from '@/lib/config.js'
 
 export default {
   props: ['content', 'placeHolder'],
@@ -64,8 +60,9 @@ export default {
       this.$emit('updateContent', content.html, content.text)
     },
     uploadSuc(response) {
-      const url = `${imgDec}${response.fileName}`
-      this.$refs.myQuillEditor.quill.insertEmbed(this.$refs.myQuillEditor.quill.getSelection(), 'image', url)
+      // const url = `${imgDec}${response.fileName}`
+      const fake = '测试图片链接'
+      this.$refs.myQuillEditor.quill.insertEmbed(this.$refs.myQuillEditor.quill.getSelection(), 'image', fake)
     }
   }
 }

@@ -9,7 +9,7 @@
 import MainHeader from '../components/MainHeader.vue'
 
 export default {
-  name: 'home',
+  // name: 'home',
   components: {
     MainHeader
   }

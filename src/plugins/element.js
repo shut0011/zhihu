@@ -1,5 +1,8 @@
 import Vue from 'vue'
-import { Button, Menu, MenuItem, Input, Dropdown, DropdownItem, DropdownMenu, Card, Form, FormItem, Message } from 'element-ui'
+import {
+  Button, Menu, MenuItem, Input, Dropdown, DropdownItem, DropdownMenu, Card, Form, FormItem, Message,
+  Upload, Dialog
+} from 'element-ui'
 
 // const { Message } = Element
 Vue.prototype.$Message = Message
@@ -14,4 +17,6 @@ Vue.use(DropdownMenu)
 Vue.use(Card)
 Vue.use(Form)
 Vue.use(FormItem)
+Vue.use(Upload)
+Vue.use(Dialog)
 // Vue.use(Message)

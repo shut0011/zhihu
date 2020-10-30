@@ -6,7 +6,18 @@ if (process.server) {
   config.baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`
 }
 
+// console.log('service config =', config)
+
+// console.log('service process =', process)
+
 const service = axios.create(config)
+// console.log('service =', service)
+
+// service.interceptors.request.use(function(config) {
+//   // 比如是否需要设置 token
+//   config.headers.token = 'wwwwwsdsdf'
+//   return config
+// })
 
 // 返回结果处理
 service.interceptors.response.use(
@@ -39,6 +50,7 @@ export default {
   },
   // get 方法
   get(url, data) {
+    // console.log('get url =', url)
     return service({
       method: 'get',
       url,

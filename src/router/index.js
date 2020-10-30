@@ -3,7 +3,11 @@ import VueRouter from 'vue-router'
 import Home from '../views/home.vue'
 import MainPage from '../views/MainPage.vue'
 import ListItem from '../components/ListItem.vue'
+import ListItemHot from '../components/ListItemHot.vue'
 import SignUp from '../views/SignUp.vue'
+import Editor from '../views/Editor.vue'
+import DetailsArticles from '../views/DetailsArticle.vue'
+import DetailsQuestions from '../views/DetailsQuestion.vue'
 
 Vue.use(VueRouter)
 // router文件夹-->index.js文件
@@ -21,17 +25,18 @@ export default new VueRouter({
       path: '/',
       component: Home,
       children: [{
-        path: '',
+        path: '/',
+        redirect: '/home',
         component: MainPage,
         children: [{
           path: '/home',
           name: 'home',
-          compnent: ListItem
+          component: ListItem
         },
         {
           path: '/hot',
           name: 'hot',
-          component: ListItem
+          component: ListItemHot
         }]
       }]
     },
@@ -39,6 +44,21 @@ export default new VueRouter({
       path: '/signup',
       name: 'signup',
       component: SignUp
+    },
+    {
+      path: '/editor/:articleId',
+      name: 'editor',
+      component: Editor
+    },
+    {
+      path: '/article/:id',
+      name: 'detailsArticles',
+      component: DetailsArticles
+    },
+    {
+      path: '/question/:id',
+      name: 'detailsQuestions',
+      component: DetailsQuestions
     }
   ]
 })

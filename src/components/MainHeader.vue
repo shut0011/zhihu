@@ -1,5 +1,9 @@
 <template>
   <header class="main-header">
+    <el-dialog title="新的问题" :visible.sync="askModelVisiable" :modal-append-to-body='false'>
+      新问题
+      <ask-model @changeAskModelVisiable=changeAskModelVisiable />
+    </el-dialog>
     <div class="header-content">
       <router-link class="m-r-20" :to="{ name: 'home' }">
         <img class="logo" src="./../assets/logo.png" alt="">
@@ -14,7 +18,7 @@
       <el-input size="small" class="search m-r-10" placeholder="请输入内容" v-model="keywords">
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
-      <el-button class="btnAsk" size="small" type="primary">提问</el-button>
+      <el-button class="btnAsk" size="small" type="primary"  @click="askModelVisiable = true">提问</el-button>
 
       <div class="userInfo" v-if="!isLogin">
         <route-link :to="{ name: 'signup' }">登录</route-link>
@@ -54,6 +58,7 @@
 
 <script>
 import request from '@/service'
+import AskModel from './AskModel.vue'
 
 export default {
   data() {
@@ -61,8 +66,12 @@ export default {
       activeIndex: '1',
       keywords: '',
       isLogin: true,
-      name: ''
+      name: '',
+      askModelVisiable: false
     }
+  },
+  components: {
+    AskModel
   },
   mounted() {
     this.checkLogin()
@@ -96,11 +105,10 @@ export default {
         }
       })
       console.log('登出')
+    },
+    changeAskModelVisiable(status) {
+      this.askModelVisiable = status
     }
   }
 }
 </script>
-
-<style lang="less" scoped>
-
-</style>
