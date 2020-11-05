@@ -1,7 +1,7 @@
 <template>
   <div>
     <main-list-nav :type="type" />
-    <el-card :v-loading="loading">
+    <el-card>
       <div class="card-content">
         <router-view v-for="(item, index) in fakeInfo" :key="index" :item="item"
         :index="index" :type="item.type" :showPart="['creator', 'all', 'title', 'votes', 'excerpt']"/>
@@ -13,6 +13,7 @@
 <script>
 import request from '@/service'
 import MainListNav from '@/components/MainListNav.vue'
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 export default {
   components: {
@@ -22,24 +23,8 @@ export default {
     return {
       type: 'main',
       loading: false,
-      abc: [
-        {
-          a: 100,
-          b: {
-            b1: 50,
-            b2: 100
-          }
-        },
-        {
-          a: 200,
-          b: {
-            b1: 55,
-            b2: 220
-          }
-        }
-      ],
-      fakeInfo: {},
-      fakeInfo11: [
+      fakeInfo11: {},
+      fakeInfo: [
         {
           id: 161246203,
           type: 'article',
@@ -279,7 +264,7 @@ export default {
   },
   methods: {
     fetchDate() {
-      this.loading = true
+      // this.loading = true
       if (this.$route.name === 'home') {
         this.getNormalList()
       } else if (this.$route.name === 'hot') {
@@ -287,7 +272,7 @@ export default {
       } else {
         this.getNormalList()
       }
-      this.loading = false
+      // this.loading = false
     },
     async getHotList() {
       // console.log('fakeInfo =', this.fakeInfo)
@@ -304,6 +289,7 @@ export default {
       })
     },
     async getNormalList() {
+      await delay(2000)
       await request.get('/articles/list').then((res) => {
         // console.log('getNormalList res =', res)
         console.log('getNormalList data =', res.data)

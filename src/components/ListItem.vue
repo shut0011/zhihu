@@ -9,8 +9,8 @@
       </h2>
     </div>
 
-    <div class="creator-info clearfix" v-if="showPart.includes('creator')">
-      <router-link :to="{ name: 'peopleMain', params: { id: item.author ? item.author.id : 0 }}">
+    <div class="creator-info clearfix" v-if="showPart.includes('creator') && item.author && item.author.id">
+      <router-link :to="{name: 'peopleMain', params: {id: item.author ? item.author.id : 0}}">
         <img :src="item.author ? item.author.avatar_url : ''" alt="">
         <div class="detail">
           <p class="username">{{item.author ? item.author.name : ''}}</p>
@@ -36,7 +36,8 @@
       </div>
 
       <div class="content" v-if="showType === 'all'">
-        <router-link v-if="showPart.includes('creator')" class="mini-creator-info clearfix" :to="{name: 'peopleMain', params: {id: item.author ? item.author.id : 0}}">
+        <router-link v-if="showPart.includes('creator')" class="mini-creator-info clearfix"
+        :to="{name: 'peopleMain', params: {id: item.author ? item.author.id : 0}}">
           <img class="avatar" :src="item.author ? item.author.avatar_url : ''" alt="">
           <p class="username">{{item.author ? item.author.name : ''}}</p>
         </router-link>
@@ -74,7 +75,8 @@ export default {
   },
   data() {
     return {
-      showType: 'excerpt'
+      showType: 'excerpt',
+      showActionItem: ['vote', 'thanks', 'comment', 'share', 'favorite', 'more']
     }
   },
   computed: {

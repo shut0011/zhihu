@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/home.vue'
+import Home from '../views/Home.vue'
 import MainPage from '../views/MainPage.vue'
 import ListItem from '../components/ListItem.vue'
 import ListItemHot from '../components/ListItemHot.vue'
@@ -8,6 +8,8 @@ import SignUp from '../views/SignUp.vue'
 import Editor from '../views/Editor.vue'
 import DetailsArticles from '../views/DetailsArticle.vue'
 import DetailsQuestions from '../views/DetailsQuestion.vue'
+import People from '../views/People.vue'
+import AskItem from '../components/AskItem.vue'
 
 Vue.use(VueRouter)
 // router文件夹-->index.js文件
@@ -18,7 +20,8 @@ VueRouter.prototype.push = function push(location) {
 }
 
 export default new VueRouter({
-  mode: 'history',
+  // mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -59,6 +62,26 @@ export default new VueRouter({
       path: '/question/:id',
       name: 'detailsQuestions',
       component: DetailsQuestions
+    },
+    {
+      path: '/people/:id',
+      component: People,
+      children: [{
+        path: '',
+        name: 'peopleMain',
+        component: ListItem
+      },
+      {
+        path: 'articles',
+        name: 'peopleArticles',
+        component: ListItem
+      },
+      {
+        path: 'asks',
+        name: 'peopleAsks',
+        component: AskItem
+      }
+      ]
     }
   ]
 })

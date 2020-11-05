@@ -6,7 +6,7 @@
     </el-dialog>
     <div class="header-content">
       <router-link class="m-r-20" :to="{ name: 'home' }">
-        <img class="logo" src="./../assets/logo.png" alt="">
+        <img class="logo" :src="require('./../assets/logo.png')" alt="">
       </router-link>
       <el-menu :default-active="activeIndex" class="m-r-20" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1">首页</el-menu-item>
@@ -31,7 +31,7 @@
         <el-dropdown placement="bottom" trigger="click" class="hand-click">
           <span>
             {{this.name}}
-            <img class="avator" height="20px" width="20px" src="./../assets/logo.png" alt="">
+            <img class="avator" height="20px" width="20px" :src="require('./../assets/logo.png')" alt="">
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
@@ -59,6 +59,7 @@
 <script>
 import request from '@/service'
 import AskModel from './AskModel.vue'
+import { getCookies } from '@/lib/utils'
 
 export default {
   data() {
@@ -82,6 +83,7 @@ export default {
     },
     goToPersionalPage() {
       console.log('跳转到用户页面')
+      this.$router.push(`/people/${getCookies('id')}`)
     },
     async checkLogin() {
       await request.get('users/checkLogin').then((res) => {

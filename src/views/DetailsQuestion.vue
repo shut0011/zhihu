@@ -1,5 +1,5 @@
 <template>
-  <div class="question-details" v-loading="loading">
+  <div class="question-details" :v-loading="loading">
     <div class="question-header">
       <el-dialog title="修改问题" :visible.sync="askModelVisiable" :model-append-to-body='false'>
         <ask-model @changeAskModelVisible="changeAskModelVisiable"
@@ -64,7 +64,7 @@
 
     <div class="question-main">
       <div class="question-main-clo">
-        <el-card class="m-b-15" v-loading="authorLoading" v-show="answerVisiable">
+        <el-card class="m-b-15" :v-loading="authorLoading" v-show="answerVisiable">
           <div class="author-info m-t-25">
             <div class="avatar">
               <img :src="authorInfo.avatarUrl || ''" alt="">
