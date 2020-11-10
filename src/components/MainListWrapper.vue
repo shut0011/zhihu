@@ -1,7 +1,7 @@
 <template>
   <div>
     <main-list-nav :type="type" />
-    <el-card>
+    <el-card :v-loading="loading">
       <div class="card-content">
         <router-view v-for="(item, index) in fakeInfo" :key="index" :item="item"
         :index="index" :type="item.type" :showPart="['creator', 'all', 'title', 'votes', 'excerpt']"/>
@@ -13,7 +13,8 @@
 <script>
 import request from '@/service'
 import MainListNav from '@/components/MainListNav.vue'
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+// const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+// const axios = require('axios')
 
 export default {
   components: {
@@ -23,8 +24,8 @@ export default {
     return {
       type: 'main',
       loading: false,
-      fakeInfo11: {},
-      fakeInfo: [
+      fakeInfo: {},
+      fakeInfo11: [
         {
           id: 161246203,
           type: 'article',
@@ -260,28 +261,28 @@ export default {
     $route: 'fetchDate'
   },
   mounted() {
-    this.fetchDate()
+    // this.fetchDate()
   },
   methods: {
     fetchDate() {
-      // this.loading = true
+      this.loading = true
       if (this.$route.name === 'home') {
         this.getNormalList()
       } else if (this.$route.name === 'hot') {
         this.getHotList()
       } else {
-        this.getNormalList()
+        // this.getNormalList()
       }
-      // this.loading = false
+      this.loading = false
     },
     async getHotList() {
-      // console.log('fakeInfo =', this.fakeInfo)
-      await request.get('/hot-list-web', {
-        limit: 3,
+      await request.get('/api/v3/feed/topstory/hot-list-web', {
+      // await request.get('/hot-list-web', {
+        limit: 6,
         desktop: true
       }).then((res) => {
-        // console.log('getHotList res=', res)
-        // console.log('getHotList res.data.data=', res.data.data)
+        console.log('getHotList res=', res)
+        console.log('getHotList res.data.data=', res.data.data)
         if (res.status === 200) {
           this.fakeInfo = []
           this.fakeInfo = res.data.data
@@ -289,7 +290,6 @@ export default {
       })
     },
     async getNormalList() {
-      await delay(2000)
       await request.get('/articles/list').then((res) => {
         // console.log('getNormalList res =', res)
         console.log('getNormalList data =', res.data)

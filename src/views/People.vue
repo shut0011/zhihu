@@ -33,7 +33,7 @@
           :heght="300"
         />
         <div class="avatar" @click="activeUser ? imgUploadShow = true : ''" v-show="!imgUploadShow" >
-          <img :src="userInfo.avatarUrl" alt="">
+          <img :src="userInfo.avatarUrl || ''" alt="">
           <p class="img-hover-tip hidden" v-if="activeUser">
             <i class="el-icon-edit" />
             点击更改图片
@@ -51,7 +51,7 @@
           <ul class="content-edit clearfix" v-show="userInfoEditorShow">
             <li>
               <span>座右铭：</span>
-              <el-input type="text" v-model="newHeadLine" maxlength=150 />
+              <el-input type="text" v-model="newHeadline" maxlength=150 />
             </li>
           </ul>
           <div class="sex" v-if="!detailsShow">
@@ -106,7 +106,7 @@
               >取消</el-button>
               <el-button
                 type="primary"
-                @click="updateUserInfo('headline', newHeadLine)"
+                @click="updateUserInfo('headline', newHeadline)"
               >保存</el-button>
             </div>
           </div>
@@ -230,17 +230,19 @@ export default {
     AvatarUpload
   },
   mounted() {
-    this.getList()
+    this.checkLogin()
+    // this.getList()
     this.getUser()
   },
   computed: {
     activeUser() {
-      console.log('activeUser =', this.userInfo.id, parseFloat(getCookies('id')))
+      // console.log('activeUser =', this.userInfo.id, parseFloat(getCookies('id')))
       return this.userInfo.id === parseFloat(getCookies('id'))
     }
   },
   data() {
     return {
+      isLogin: 'true',
       listInfo: [],
       userInfo: {},
       editorAnswer: {
@@ -250,7 +252,7 @@ export default {
         content: ''
       },
       editorPlaceholder: '修改回答..',
-      newHeadLine: '',
+      newHeadline: '',
       listLoading: false,
       userLoading: false,
       editorShow: false,
@@ -265,8 +267,19 @@ export default {
     }
   },
   methods: {
+    async checkLogin() {
+      await request.get('users/checkLogin').then((res) => {
+        if (res.status === 200) {
+          this.name = res.data.name
+          this.isLogin = true
+        } else {
+          this.$router.push({ name: 'signup' })
+          this.isLogin = false
+        }
+      })
+    },
     cropUploadSuccess(res) {
-      this.updateUserInfo('avatarUrl', `${imgDec}${res.fileName}`)
+      this.updateUserInfo('avatarUrl', `${imgDec}${res.url}`)
       this.imgUploadShow = false
     },
     cropUploadFail() {
@@ -334,11 +347,12 @@ export default {
       await request.get('/users', {
         userId: this.$route.params.id
       }).then((res) => {
-        console.log('getUser res =', res)
-        console.log('getUser res data =', res.data)
+        // console.log('getUser res =', res)
+        // console.log('getUser res data =', res.data)
         if (res.data.status === 200) {
+          console.log('getUser userInfo res.data.content =', res.data.content)
           this.userInfo = res.data.content
-          this.newHeadLine = this.userInfo.headline
+          this.newHeadline = this.userInfo.headline
           this.userLoading = false
         } else {
           this.$Message.error('获取用户信息失败，请稍后再试')

@@ -8,10 +8,10 @@
         </router-link>
       </h2>
     </div>
-
+<!--
     <div class="creator-info clearfix" v-if="showPart.includes('creator') && item.author && item.author.id">
       <router-link :to="{name: 'peopleMain', params: {id: item.author ? item.author.id : 0}}">
-        <img :src="item.author ? item.author.avatar_url : ''" alt="">
+        <img :src="item.author ? item.author.avatarUrl : ''" alt="">
         <div class="detail">
           <p class="username">{{item.author ? item.author.name : ''}}</p>
           <p class="introduce">{{item.author ? item.author.headline: ''}}</p>
@@ -21,7 +21,8 @@
 
     <div class="vote" v-if="showPart.includes('votes')">
       <span>{{ item.status ? 10 : 0 }} 人赞同了该回答</span>
-    </div>
+    </div> -->
+
     <div class="content-wrapper clearfix">
       <div class="shortCut" v-if="showType === 'excerpt'">
         <div class="cover" v-if="transtedInfo.cover">
@@ -38,7 +39,7 @@
       <div class="content" v-if="showType === 'all'">
         <router-link v-if="showPart.includes('creator')" class="mini-creator-info clearfix"
         :to="{name: 'peopleMain', params: {id: item.author ? item.author.id : 0}}">
-          <img class="avatar" :src="item.author ? item.author.avatar_url : ''" alt="">
+          <img class="avatar" :src="item.author ? item.author.avatarUrl : ''" alt="">
           <p class="username">{{item.author ? item.author.name : ''}}</p>
         </router-link>
         <div v-html="item.content"></div>

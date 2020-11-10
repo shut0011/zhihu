@@ -1,14 +1,14 @@
 import axios from 'axios'
 import config from './config'
 
+console.log('service process =', process)
+
 // 判断是路由跳转还是 axios 请求
 if (process.server) {
   config.baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`
 }
 
-// console.log('service config =', config)
-
-// console.log('service process =', process)
+console.log('service config =', config)
 
 const service = axios.create(config)
 // console.log('service =', service)

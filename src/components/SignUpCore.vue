@@ -1,6 +1,6 @@
 <template>
   <el-card class="signup-content">
-    <img :src="require('./../assets/imgs/logo.png')" alt="">
+    <img src="/logo.png" alt="">
     <p class="slogen">FakeZhihu Project</p>
     <div class="register" v-show="nowStatus === 'register'">
       <el-form :model="registerForm" :rules="registerRules" ref="registerForm" label-width="0px">

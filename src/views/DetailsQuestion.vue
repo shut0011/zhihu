@@ -173,6 +173,7 @@ export default {
   },
   data() {
     return {
+      isLogin: 'true',
       questionData: {},
       loading: true,
       authorLoading: false,
@@ -197,9 +198,21 @@ export default {
     }
   },
   mounted() {
+    this.checkLogin()
     this.getQuestion()
   },
   methods: {
+    async checkLogin() {
+      await request.get('users/checkLogin').then((res) => {
+        if (res.status === 200) {
+          this.name = res.data.name
+          this.isLogin = true
+        } else {
+          this.$router.push({ name: 'signup' })
+          this.isLogin = false
+        }
+      })
+    },
     async getQuestion() {
       this.loading = true
       await request.get('/questions', {

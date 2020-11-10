@@ -42,6 +42,7 @@ import request from '@/service'
 export default {
   data() {
     return {
+      isLogin: 'true',
       showActionItems: ['vote', 'thanks', 'comment', 'share', 'favorite', 'more'],
       loading: false,
       articleData: {},
@@ -52,16 +53,28 @@ export default {
     ListItemActions
   },
   mounted() {
+    this.checkLogin()
     this.loading = true
     this.getArticle()
   },
   methods: {
+    async checkLogin() {
+      await request.get('users/checkLogin').then((res) => {
+        if (res.status === 200) {
+          this.name = res.data.name
+          this.isLogin = true
+        } else {
+          this.$router.push({ name: 'signup' })
+          this.isLogin = false
+        }
+      })
+    },
     async getArticle() {
-      console.log('getArticle route =', this.$route)
+      // console.log('getArticle route =', this.$route)
       await request.get('/articles', {
         articleId: this.$route.params.id
       }).then((res) => {
-        console.log('getArticle data = ', res.data)
+        // console.log('getArticle data = ', res.data)
         if (res.data.status === 200) {
           this.articleData = res.data.content
           this.loading = false

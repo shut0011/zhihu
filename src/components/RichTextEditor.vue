@@ -5,18 +5,19 @@
     </quill-editor>
     abc
     <el-upload class="hidden" action="/imgs/upload" :on-success=uploadSuc
-      accept=".jpg,.jpeg,.JPG,.JPEG,.png,.PNG">
+      accept=".jpg,.jpeg,.JPG,.JPEG,.png,.PNG" multiple>
       <div ref="hiddenUpload"></div>
     </el-upload>
   </div>
 </template>
+
 <script>
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
 import { quillEditor } from 'vue-quill-editor'
-// import { imgDec } from '@/lib/config.js'
+import { imgDec } from '@/lib/config.js'
 
 export default {
   props: ['content', 'placeHolder'],
@@ -60,9 +61,11 @@ export default {
       this.$emit('updateContent', content.html, content.text)
     },
     uploadSuc(response) {
-      // const url = `${imgDec}${response.fileName}`
-      const fake = '测试图片链接'
-      this.$refs.myQuillEditor.quill.insertEmbed(this.$refs.myQuillEditor.quill.getSelection(), 'image', fake)
+      const url = `${imgDec}${response.url}`
+      // const url = response.url
+      // console.log('uploadSuc response = ', response)
+      // console.log('uploadSuc url filePath = ', url)
+      this.$refs.myQuillEditor.quill.insertEmbed(this.$refs.myQuillEditor.quill.getSelection(), 'image', url)
     }
   }
 }

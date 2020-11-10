@@ -6,7 +6,7 @@
     </el-dialog>
     <div class="header-content">
       <router-link class="m-r-20" :to="{ name: 'home' }">
-        <img class="logo" :src="require('./../assets/logo.png')" alt="">
+        <img class="logo" src="/logo.png" alt="">
       </router-link>
       <el-menu :default-active="activeIndex" class="m-r-20" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1">首页</el-menu-item>
@@ -31,14 +31,12 @@
         <el-dropdown placement="bottom" trigger="click" class="hand-click">
           <span>
             {{this.name}}
-            <img class="avator" height="20px" width="20px" :src="require('./../assets/logo.png')" alt="">
+            <img class="avator" height="20px" width="20px" src="/logo.png" alt="">
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>
-              <div @click="goToPersionalPage">
+            <el-dropdown-item @click.native="goToPersionalPage">
                 <span class="el el-icon-fakezhihu-persion"></span>
                 我的主页
-              </div>
             </el-dropdown-item>
             <el-dropdown-item divided>
               <i class="el-icon-setting">设置</i>
@@ -82,7 +80,7 @@ export default {
       console.log(key)
     },
     goToPersionalPage() {
-      console.log('跳转到用户页面')
+      console.log('跳转到用户页面 getCookies() = ', getCookies('id'))
       this.$router.push(`/people/${getCookies('id')}`)
     },
     async checkLogin() {

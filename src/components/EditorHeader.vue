@@ -1,7 +1,7 @@
 <template>
   <header class="editor-header">
     <router-link class="m-r-20 logo-wrapper" :to="{ name: 'home' }">
-      <img class="logo" :src="require('./../assets/imgs/logo.png')" alt="">
+      <img class="logo" src="/logo.png" alt="">
     </router-link>
     <div class="header-content">
       <span class="title">写文章</span>

@@ -1,6 +1,5 @@
 <template>
   <div class="hot">
-    ListItemHot
     <div class="hotItem-rank">
       <span :class="index > 2 ? 'backRank': 'frontRank'">{{index + 1}}</span>
     </div>
