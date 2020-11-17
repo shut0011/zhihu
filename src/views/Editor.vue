@@ -105,6 +105,7 @@ export default {
       }).then((res) => {
         if (res.data.status === 201) {
           this.$Message.success('新建文章成功')
+          this.$router.push(`/people/${getCookies('id')}/articles`)
         } else {
           this.$Message.error(res.error)
         }
@@ -140,12 +141,6 @@ export default {
           this.$Message.error('文章修改失败，请稍后再试')
         } else {
           this.$Message.success('文章修改成功')
-          // this.$router.push({
-          //   name: 'peopleArticles',
-          //   param: {
-          //     id: 17
-          //   }
-          // })
           this.$router.push(`/people/${getCookies('id')}/articles`)
         }
       })

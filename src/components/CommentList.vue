@@ -1,5 +1,5 @@
 <template>
-  <div class="comment-list p-t-20" :v-loading="loading">
+  <div class="comment-list p-t-20" v-loading="loading">
     <p v-show="commentList.length === 0">当前没有评论</p>
     <p v-show="commentList.length !== 0">
       共{{commentList.length}}条评论
@@ -25,7 +25,7 @@ export default {
   props: ['targetId', 'targetType'],
   data() {
     return {
-      loading: true,
+      loading: false,
       comment: '',
       commentList: []
     }
@@ -45,13 +45,13 @@ export default {
       }).then((res) => {
         if (res.data.status === 200) {
           this.commentList = res.data.list
-          this.loading = false
           this.$emit('commentC', this.commentList.length)
         } else {
           this.$Message.error(res.error)
           this.getComments()
         }
       })
+      this.loading = false
     },
     async createComment() {
       await request.post('/comments', {

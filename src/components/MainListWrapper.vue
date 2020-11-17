@@ -1,7 +1,7 @@
 <template>
   <div>
     <main-list-nav :type="type" />
-    <el-card :v-loading="loading">
+    <el-card v-loading="loading" style="width: 100%">
       <div class="card-content">
         <router-view v-for="(item, index) in fakeInfo" :key="index" :item="item"
         :index="index" :type="item.type" :showPart="['creator', 'all', 'title', 'votes', 'excerpt']"/>
@@ -13,8 +13,7 @@
 <script>
 import request from '@/service'
 import MainListNav from '@/components/MainListNav.vue'
-// const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-// const axios = require('axios')
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms)) // 只是为了看到element-ui loading机制的效果
 
 export default {
   components: {
@@ -264,8 +263,10 @@ export default {
     // this.fetchDate()
   },
   methods: {
-    fetchDate() {
+    async fetchDate() {
+      // console.log('fetchData loading =', this.loading)
       this.loading = true
+      await delay(1000) // 只是为了看到element-ui loading机制的效果
       if (this.$route.name === 'home') {
         this.getNormalList()
       } else if (this.$route.name === 'hot') {
@@ -274,6 +275,7 @@ export default {
         // this.getNormalList()
       }
       this.loading = false
+      // console.log('fetchData loading =', this.loading)
     },
     async getHotList() {
       await request.get('/api/v3/feed/topstory/hot-list-web', {
@@ -307,3 +309,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/* body {
+  margin: 0;
+} */
+</style>

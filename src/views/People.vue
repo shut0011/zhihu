@@ -1,5 +1,5 @@
 <template>
-  <div class="people" :v-loading="userLoading">
+  <div class="people" v-loading="userLoading">
     <el-dialog
       :title="editorAnswer.question.title"
       :visible.sync="editorShow"
@@ -113,11 +113,9 @@
         </div>
       </div>
     </el-card>
-    <div class="profile-main" :v-loading="listLoading">
-      <div class="profile-content">
-        <main-list-nav
-          :type= "'people'"
-        />
+    <div class="profile-main">
+      <div class="profile-content" v-loading="listLoading">
+        <main-list-nav :type= "'people'"/>
         <el-card v-show="listInfo.length > 0">
           <router-view
             v-for="(item) in listInfo"
@@ -218,6 +216,7 @@ import _ from 'lodash'
 import { getCookies } from '@/lib/utils'
 import AvatarUpload from 'vue-image-crop-upload'
 import { imgDec } from '@/lib/config.js'
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms)) // 只是为了看到element-ui loading机制的效果
 
 export default {
   watch: {
@@ -231,7 +230,7 @@ export default {
   },
   mounted() {
     this.checkLogin()
-    // this.getList()
+    this.getList()
     this.getUser()
   },
   computed: {
@@ -321,19 +320,19 @@ export default {
     },
     async getList() {
       this.listLoading = true
+      await delay(1000) // 只是为了看到element-ui loading机制的效果
       this.listInfo = []
-      console.log('getList name =', this.$route.name)
-      console.log(this.routerTrans)
-      console.log('router =', this.$router)
-      console.log('route =', this.$route)
+      // console.log('getList name =', this.$route.name)
+      // console.log(this.routerTrans)
+      // console.log('router =', this.$router)
+      // console.log('route =', this.$route)
       await request.get(this.routerTrans[this.$route.name], {
         creatorId: this.$route.params.id
       }).then((res) => {
-        console.log('getList res =', res)
+        // console.log('getList res =', res)
         console.log('getList res data =', res.data)
         if (res.data.status === 200) {
           this.listInfo = res.data.list
-          this.listLoading = false
         } else {
           this.$Message.success('请求个人信息失败，请稍后再试')
           this.$router.push({
@@ -341,6 +340,7 @@ export default {
           })
         }
       })
+      this.listLoading = false
     },
     async getUser() {
       this.userLoading = true
@@ -353,7 +353,6 @@ export default {
           console.log('getUser userInfo res.data.content =', res.data.content)
           this.userInfo = res.data.content
           this.newHeadline = this.userInfo.headline
-          this.userLoading = false
         } else {
           this.$Message.error('获取用户信息失败，请稍后再试')
           this.$router.push({
@@ -361,6 +360,7 @@ export default {
           })
         }
       })
+      this.userLoading = false
     },
     async updateAnswer() {
       await request.put('/answers', {

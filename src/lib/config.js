@@ -1,2 +1,2 @@
-export const imgDec = 'http://101.200.200.176'
+export const imgDec = 'http://39.97.180.130'
 export const a = 123

@@ -1,5 +1,5 @@
 <template>
-  <div class="question-details" :v-loading="loading">
+  <div class="question-details" v-loading="loading">
     <div class="question-header">
       <el-dialog title="修改问题" :visible.sync="askModelVisiable" :model-append-to-body='false'>
         <ask-model @changeAskModelVisible="changeAskModelVisiable"
@@ -64,7 +64,7 @@
 
     <div class="question-main">
       <div class="question-main-clo">
-        <el-card class="m-b-15" :v-loading="authorLoading" v-show="answerVisiable">
+        <el-card class="m-b-15" v-loading="authorLoading" v-show="answerVisiable">
           <div class="author-info m-t-25">
             <div class="avatar">
               <img :src="authorInfo.avatarUrl || ''" alt="">
@@ -175,7 +175,7 @@ export default {
     return {
       isLogin: 'true',
       questionData: {},
-      loading: true,
+      loading: false,
       authorLoading: false,
       answerVisiable: false,
       commentShowType: 'all',
@@ -222,12 +222,14 @@ export default {
         this.questionData.answer = _.compact(_.map(this.questionData.answer, (item) => {
           if (item.creatorId === parseFloat(getCookies('id'))) {
             this.currentAnswer = item
+            this.loading = false
             return null
           }
+          this.loading = false
           return item
         }))
-        this.loading = false
       })
+      this.loading = false
     },
     async getAuthorInfo() {
       this.authorLoading = true
@@ -236,9 +238,9 @@ export default {
       }).then((res) => {
         if (res.data.status === 200) {
           this.authorInfo = res.data.content
-          this.authorLoading = false
         }
       })
+      this.authorLoading = false
     },
     async createAnswer() {
       this.authorLoading = true
@@ -250,13 +252,13 @@ export default {
       }).then((res) => {
         if (res.data.status === 201) {
           this.$Message.success('回答成功')
-          this.authorLoading = false
           this.answerVisiable = false
           this.getQuestion()
         } else {
           this.$Message.error('回答失败，请稍后再试')
         }
       })
+      this.authorLoading = false
     },
     changeAskModelVisiable(status) {
       this.askModelVisiable = status

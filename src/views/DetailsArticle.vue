@@ -1,5 +1,5 @@
 <template>
-  <div class="article-details" :v-loading="loading">
+  <div class="article-details" v-loading="loading">
     <div class="article-wrapper">
       <div class="cover">
         <img :src="articleData.cover" alt="">
@@ -54,7 +54,6 @@ export default {
   },
   mounted() {
     this.checkLogin()
-    this.loading = true
     this.getArticle()
   },
   methods: {
@@ -71,18 +70,19 @@ export default {
     },
     async getArticle() {
       // console.log('getArticle route =', this.$route)
+      this.loading = true
       await request.get('/articles', {
         articleId: this.$route.params.id
       }).then((res) => {
         // console.log('getArticle data = ', res.data)
         if (res.data.status === 200) {
           this.articleData = res.data.content
-          this.loading = false
         } else {
           this.$Message.error('获取文章失败，请稍后再试')
           this.$route.go(-1)
         }
       })
+      this.loading = false
     }
   }
 }

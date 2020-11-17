@@ -5,7 +5,7 @@ const path = require('path')
 
 module.exports = {
   publicPath: './',
-   
+
   devServer: {
     proxy: {
       '/users': {
@@ -32,10 +32,10 @@ module.exports = {
       // '/hot-list-web': {
       //   target: 'https://www.zhihu.com/api/v3/feed/topstory/',
       '/api/v3/feed/topstory/hot-list-web': {
-        target: 'https://www.zhihu.com/',
-    },
+        target: 'https://www.zhihu.com/'
+      },
       '/moments': {
-        target: 'https://www.zhihu.com/api/v3/',
+        target: 'https://www.zhihu.com/api/v3/'
       },
       '/recommend': {
         target: 'https://www.zhihu.com/api/v3/feed/topstory/'

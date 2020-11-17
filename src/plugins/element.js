@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import {
   Button, Menu, MenuItem, Input, Dropdown, DropdownItem, DropdownMenu, Card, Form, FormItem, Message,
-  Upload, Dialog
+  Upload, Dialog, Loading
 } from 'element-ui'
 
 // const { Message } = Element
@@ -19,4 +19,5 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Upload)
 Vue.use(Dialog)
+Vue.use(Loading)
 // Vue.use(Message)
